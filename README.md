@@ -1,4 +1,4 @@
-# mingeso-frontend
+# hotel-frontend
 
 ## Project setup
 ```
