@@ -1,6 +1,6 @@
 <template>
   <div class="formulario">
-  <h3> Agregar Reserva</h3>
+  <h3> Reserva</h3>
     <b-form @submit="postToApi" @reset="onReset" v-if="show">
     <b-form-group id="input-group-1" label="Nombres:" label-for="input-2">
         <b-form-input
