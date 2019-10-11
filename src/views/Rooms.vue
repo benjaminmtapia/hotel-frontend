@@ -1,21 +1,24 @@
 <template>
    
    <b-container>
-   <div class="filter">
+
+        
         <b-row>
-        
+        <b-col sm="1"> </b-col>
+        <b-col sm="9">
+        <div class="filter">
+        <h6 justify-center>Filtrar Habitaciones</h6>
         <b-form inline @submit="searchFilter" class="justify-content-md-center">
-        
-                <b-form-group id="input-group-1" label="Tipo de Habitación" label-for="input-1">
-                <b-form-select
+            
+                <b-form-group id="input-group-1" label="Cantidad Camas: " label-for="input-1">
+                <b-form-input
                 id="input-1"
                 required
-                v-model="searchForm.tipoHabitacion"
-                type="select"
-                :options="nombres"
-                style="margin-right:20px;padding:10px;"
-                placeholder="Simple"
-                ></b-form-select>
+                type="number"
+                style="height:30px;width:50px;margin-left:5px;margin-right:5px;"
+                v-model="searchForm.bedQuantity"
+                
+                ></b-form-input>
                 </b-form-group>
 
                 <b-form-group id="input-group-2" label="Fecha inicio: " label-for="input-2">
@@ -23,9 +26,9 @@
                 id="input-2"
                 required
                 type="date"
+                style="height:30px;width:170px;margin-left:5px;margin-right:5px;"
                 v-model="searchForm.fechaInicio"
-                style="width:180px;padding:10px; margin-right:10px;"
-                placeholder="0" 
+                
                 ></b-form-input>
                 </b-form-group>
 
@@ -35,28 +38,54 @@
                 required
                 type="date"
                 v-model="searchForm.fechaFin"
-                
-                placeholder="0" 
+                style="height:30px;width:170px;"
+                placeholder="seleccione" 
                 ></b-form-input>
                 </b-form-group>
-                <b-button id="boton" type="submit" variant="success">Enviar</b-button>
+                <div class="queryButton">
+                <b-button id="boton" type="submit" variant="primary">buscar</b-button>
+                </div>
             
         </b-form>
+       </div>
+        </b-col>
+        <b-col sm="1"></b-col>
+        </b-row>  
+        <b-row v-for="room in rooms">
+        <b-col ></b-col>
+            <b-col sm="6" class="room">
+            
+            <b-form>
+            <h6>Habitación {{room.roomNumber}}</h6>
+            
+           <p> Capacidad: {{room.capacity}}
+           <br>
+             Tipo de Cama: {{room.bedType}}<br>
+             Valor: ${{room.value}} </p>
+             <div class="reservationButton">
+             <b-button id="boton" @click="addToRooms(room.id)" variant="success">Reservar</b-button>
+             </div>
+             </b-form>
+            </b-col>
+        <b-col></b-col>
         </b-row>
-        </div>   
-        <b-button id="boton2" variant="dark" @click="showRooms=!showRooms">mostrar</b-button>
-        <h1 v-if="showRooms">hola</h1>
+        
     </b-container>
 </template>
 
 <script>
+import axios from 'axios';
+import image1 from '../images/room1.jpg'
 export default {
     data(){
         return{
+            roomIds:[],
+            rooms:null,
             searchForm:{
-            tipoHabitacion:null,
-            fechaInicio:null,
-            fechaFin:null
+                bedQuantity:0,
+                fechaInicio:null,
+                fechaFin:null,
+                roomObserver:0,
             },
             showRooms:false,
             nombres:[
@@ -71,20 +100,58 @@ export default {
             evt.preventDefault();
             console.log( this.searchForm);
            // this.showRooms!=this.showRooms
+        },
+        getRooms(){
+            axios.get('http://192.241.158.237:8081/mingeso/rooms').then((response)=>{
+                this.rooms = response.data;
+                console.log(response.data)
+            });
+            console.log(this.rooms)
+        },
+        addToRooms(pid){
+            if(this.roomIds.includes(pid)){
+                console.log("ya esta registrada la habitacion")
+            }
+            else{
+            this.roomIds.push(pid)
+            }
+            console.log(this.roomIds)
         }
+    },
+    created() {
+        this.getRooms();
     },
 }
 </script>
 
 <style lang="css">
     .filter{
-   
-    font-size:15px;
+    margin-left: 85px;
+    font-size:13px;
     margin-top:20px;  
-    background-color:#fafafa;
+    background-color:#fbfbfb;
     border-radius:10px;
     padding:45px;
     text-align:left;
-    border:1px solid #ffffaa;
+    border:1px solid #efefec;
+    }
+    .queryButton{
+        margin-left:10px;
+        padding:10px;
+        height:30px;
+        margin-top:10px;
+    }
+    .room{
+        padding:10px;
+        background-color:white;
+        border:1px solid #aaa;
+        text-align:left;
+        font-size:13px;
+        margin-top:15px;
+    }
+    .reservationButton{
+        margin-bottom:10px;
+        margin-right:5px;
+        float:right
     }
 </style>

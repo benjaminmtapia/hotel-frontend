@@ -5,6 +5,11 @@ import './plugins/bootstrap-vue'
 import App from './App.vue'
 import router from './router'
 
+
+import { GanttPlugin } from '@syncfusion/ej2-vue-gantt';
+
+Vue.use(GanttPlugin);
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -8,7 +8,6 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item href="/">Home</b-nav-item>
-        <b-nav-item href="/rack">Rack</b-nav-item>
         <b-nav-item href="/reservationSubmit">Añadir Reserva</b-nav-item>
         <b-nav-item href="/rooms">Lista Habitaciones</b-nav-item>
       </b-navbar-nav>
