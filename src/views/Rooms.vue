@@ -109,11 +109,13 @@ export default {
             evt.preventDefault();
             console.log( this.searchForm);
             var date = this.searchForm;
-            axios.get('http://192.241.158.237:8081/mingeso/room/filter',{
-                params:{
-                    addmisionDate: this.fechaInicio,
-                    departureDate: this.fechaFin
-                }
+            axios.post('http://localhost:8080/room/filter',{
+                
+                    addmisionDate: this.searchForm.fechaInicio,
+                    departureDate: this.searchForm.fechaFin
+                
+            }).then((response)=>{
+                console.log(response.data);
             })
         },
         getRooms(){
