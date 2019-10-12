@@ -1,54 +1,99 @@
 <template>
-<div>
-<ejs-gantt id="gantt" :dataSource="data" :taskFields = "taskFields" :height="height"></ejs-gantt>
-</div>
+    <div id='app'>
+        <div id='container'>
+            <ejs-schedule id='Schedule' 
+            ref='ScheduleObj'
+             width='100%' 
+             height='550px'
+              :selectedDate='selectedDate' 
+              :eventSettings='eventSettings' 
+              :group='group'>
+                <e-views>
+                    <e-view
+                     option='TimelineMonth' 
+                     :eventTemplate='timelineEventTemplate' 
+                     :allowVirtualScrolling='virtualScroll'>
+                     </e-view>
+                </e-views>
+                <e-resources>
+                    <e-resource 
+                    field='OwnerId'
+                     title='Owner'
+                     name='Owners'
+                     :allowMultiple='allowMultiple'
+                     :dataSource='ownerData'
+                     textField='Text'
+                     idField='Id'
+                     colorField='Color'>
+                    </e-resource>
+                </e-resources>
+            </ejs-schedule>
+        </div>
+    </div>
 </template>
-
 <script>
-import Vue from 'vue';
-import { GanttPlugin } from '@syncfusion/ej2-vue-gantt';
+    import Vue from 'vue';
+    import { generateResourceData, generateStaticEvents } from '../datasource.js';
+    import { SchedulePlugin, TimelineViews, TimelineMonth, Resize, DragAndDrop } from '@syncfusion/ej2-vue-schedule';
+    Vue.use(SchedulePlugin);
 
-Vue.use(GanttPlugin);
+    var timelineEventTemplateVue = Vue.component('timelineTemplate', {
+        template: `<div class='template-wrap' style='{background: data.PrimaryColor}'>
+            <div class="subject" style='{background: data.SecondaryColor};'>{{data.Subject}}</div></div>`,
+        data() {
+            return {
+                data: {}
+            };
+        }
+    });
 
-export default {
-  data: function() {
-      return{
-            data: [
-            {
-                TaskID: 1,
-                TaskName: 'Project Initiation',
-                StartDate: new Date('04/02/2019'),
-                EndDate: new Date('04/21/2019'),
-                subtasks: [
-                    {  TaskID: 2, TaskName: 'Identify Site location', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 100 },
-                    { TaskID: 3, TaskName: 'Perform Soil test', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50  },
-                    { TaskID: 4, TaskName: 'Soil test approval', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
-                ]
-            },
-            {
-                TaskID: 5,
-                TaskName: 'Project Estimation',
-                StartDate: new Date('04/02/2019'),
-                EndDate: new Date('04/21/2019'),
-                subtasks: [
-                    { TaskID: 6, TaskName: 'Develop floor plan for estimation', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-                    { TaskID: 7, TaskName: 'List materials', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-                    { TaskID: 8, TaskName: 'Estimation approval', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 }
-                ]
-            },
-        ],
-            height: '450px',
-            taskFields: {
-                id: 'TaskID',
-                name: 'TaskName',
-                startDate: 'StartDate',
-                endDate: 'EndDate',
-                duration: 'Duration',
-                progress: 'Progress',
-                dependency: 'Predecessor',
-                child: 'subtasks'
-            },
-        };
-  },
-};
+    export default {
+        data: function () {
+            return {
+                selectedDate: new Date(2018, 4, 1),
+                timelineEventTemplate: function (e) {
+                    return {
+                        template: timelineEventTemplateVue
+                    };
+                },
+                allowMultiple: true,
+                virtualScroll: true,
+                group: {
+                    byGroupID: false,
+                    resources: ['Owners']
+                },
+                ownerData: generateResourceData(1, 300, 'Resource'),
+                eventSettings: { 
+                    enableTooltip:true,
+                    dataSource: generateStaticEvents(new Date(2018, 4, 1), 300, 12) 
+                    
+                    }
+            }
+        },
+        provide: {
+            schedule: [TimelineViews, TimelineMonth, Resize, DragAndDrop]
+        }
+    }
 </script>
+<style>
+  @import "../../node_modules/@syncfusion/ej2-base/styles/material.css";
+  @import "../../node_modules/@syncfusion/ej2-vue-buttons/styles/material.css";
+  @import "../../node_modules/@syncfusion/ej2-vue-calendars/styles/material.css";
+  @import "../../node_modules/@syncfusion/ej2-vue-dropdowns/styles/material.css";
+  @import "../../node_modules/@syncfusion/ej2-vue-inputs/styles/material.css";
+  @import "../../node_modules/@syncfusion/ej2-vue-navigations/styles/material.css";
+  @import "../../node_modules/@syncfusion/ej2-vue-popups/styles/material.css";
+  @import "../../node_modules/@syncfusion/ej2-vue-schedule/styles/material.css";
+
+  .e-schedule .template-wrap .subject {
+        padding: 10px 25px;
+    }
+
+    .e-schedule .template-wrap {
+        width: 100%;
+    }
+
+    .e-schedule .e-timeline-month-view .e-resource-left-td {
+        width: 150px;
+    }
+</style>

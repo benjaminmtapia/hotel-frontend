@@ -26,7 +26,7 @@
                 required
                 type="date"
                 style="height:30px;width:170px;margin-left:5px;margin-right:5px;"
-                v-model="searchForm.fechaInicio"
+                v-model="searchForm.addmisionDate"
                 
                 ></b-form-input>
                 </b-form-group>
@@ -36,43 +36,45 @@
                 id="input-2"
                 required
                 type="date"
-                v-model="searchForm.fechaFin"
+                v-model="searchForm.departureDate"
                 style="height:30px;width:170px;"
                 placeholder="seleccione" 
                 ></b-form-input>
                 </b-form-group>
                 <div class="queryButton">
-                <b-button id="boton" type="submit" variant="primary">buscar</b-button>
+                <b-button id="boton" type="submit" @click="searchFilter" variant="primary">buscar</b-button>
                 </div>
             
         </b-form>
        </div>
         </b-col>
-        <b-col v-if="showCart" sm="2"><div class="cart">
-        <h5 style="text-align:center;">Carrito:</h5>
-        <li v-for="room in roomsReserved">
-            Habitación: {{room.roomNumber}} 
-        </li>
-        <br>
-        <b-button id="boton" variant="warning">Finalizar</b-button>
-        </div>
+         <b-col  sm="2">
+           <div class="cart">
+            <h5 style="text-align:center;">Carrito:</h5>
+                <li v-for="room in roomsReserved">
+                    Habitación: {{room.roomNumber}} 
+                </li>
+            <br>
+            <b-button id="boton2" type="submit" variant="warning" @click="createReservation()">Finalizar</b-button>
+            </div>
         </b-col>
         </b-row>  
-        <b-row v-for="room in rooms">
+        <b-row v-if="showRooms" v-for="room in rooms">
         <b-col ></b-col>
             <b-col sm="6" class="room">
             
-            <b-form>
-            <h6>Habitación {{room.roomNumber}}</h6>
-            
-           <p> Capacidad: {{room.capacity}}
-           <br>
-             Tipo de Cama: {{room.bedType}}<br>
-             Valor: ${{room.value}} </p>
-             <div class="reservationButton">
-             <b-button id="boton" @click="addToRooms(room)" variant="success">Reservar</b-button>
-             </div>
-             </b-form>
+                <b-form>
+                <h6>Habitación {{room.roomNumber}}</h6>
+                
+            <p> Capacidad: {{room.capacity}}
+                <br>
+                Tipo de Cama: {{room.bedType}}
+                <br>
+                Valor: ${{room.value}} </p>
+                <div class="reservationButton">
+                <b-button id="boton" @click="addToRooms(room)" variant="success">Reservar</b-button>
+                </div>
+                </b-form>
             </b-col>
         <b-col></b-col>
         </b-row>
@@ -82,21 +84,30 @@
 
 <script>
 import axios from 'axios';
+import {mapGetters} from 'vuex';
+import {store} from '../store.js'
 export default {
     data(){
         return{
             roomIds:[],
             roomsReserved:[],
-            rooms:null,
+            rooms:[],
+            reservation_id:0,
             roomsNeeded:1,
             actualRooms:0,
+            filterNeeded:1,
+            actualFilter:0,
+
+            actualReservation:0,
+            reservationNeeded:1,
+
             showCart:false,
+            showRooms:false,
                 searchForm:{
                     bedQuantity:0,
-                    fechaInicio:null,
-                    fechaFin:null,
+                    addmisionDate:null,
+                    departureDate:null,
                 },
-            showRooms:false,
             nombres:[
                 {value:'single',text:'Simple'},
                 {value:'doble',text:'Doble'},
@@ -107,47 +118,76 @@ export default {
     methods: {
         searchFilter(evt){
             evt.preventDefault();
-            console.log( this.searchForm);
-            var date = this.searchForm;
-            axios.post('http://localhost:8080/room/filter',{
-                
-                    addmisionDate: this.searchForm.fechaInicio,
-                    departureDate: this.searchForm.fechaFin
-                
-            }).then((response)=>{
-                console.log(response.data);
-            })
-        },
-        getRooms(){
+           // console.log( this.searchForm);
             axios.get('http://192.241.158.237:8081/mingeso/rooms').then((response)=>{
+                //console.log(response.data);
                 this.rooms = response.data;
-                console.log(response.data)
-            });
-            console.log(this.rooms)
+               this.showRooms=true
+            })
         },
         addToRooms(room){
             if(this.roomIds.includes(room.id)){
-                console.log("ya esta registrada la habitacion")
+                //console.log("ya esta registrada la habitacion")
             }
             else{
             this.roomIds.push(room.id)
             this.roomsReserved.push(room)
-            this.actualRooms++;
+            
             }
 
-            console.log(this.roomIds)
+            //console.log(this.roomsReserved)
+        },
+       
+        createReservation(){
+            let rooms = this.roomsReserved;
+            var id;
+            axios.post('http://192.241.158.237:8081/mingeso/reservation',{
+                addmisionDate:this.searchForm.addmisionDate,
+                departureDate:this.searchForm.departureDate
+                }).then((response)=>{   
+                    console.log(response.data);
+                    
+                    id = response.data
+                    this.reservation =response.data.id
+                    this.sendReservation(response.data.id)
+
+            });
+        },
+        
+         sendReservation(id){
+             console.log(id)
+             this.reservation = id
+             this.store.commit('changeReservationid',id)
+            for(let i = 0; i < this.roomsReserved.length; i++){
+                        console.log(this.roomsReserved[i])
+                        const URL = 'http://192.241.158.237:8081/mingeso/reservation/'+id+'/room/'+this.roomsReserved[i].id
+                        axios.put(URL);
+                }
+
+            console.log("el id de la reserva es "+this.reservation)
+            
         }
-    },
-    created() {
-        this.getRooms();
-    },
+
+        
+    },  
     watch: {
         actualRooms: function(value){
             if(value==this.roomsNeeded){
                 this.showCart=true;
             }
+        },
+        actualFilter: function(value){
+            if(value == this.filterNeeded){
+                this.showRooms = true;
+            }
+        },
+        actualReservation : function(value){
+            if(value==this.reservationNeeded){
+                this.sendReservation();
+            }
         }
     },
+
 }
 </script>
 
