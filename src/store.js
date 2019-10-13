@@ -27,11 +27,11 @@ export const store = new Vuex.Store({
             
             return state.roomsData
       },
-    async getReservations(){
+    async getReservations(state){
         await axios.get('http://192.241.158.237:8081/mingeso/reservations').then((response)=>(
             state.reservations = response.data
         ))
-        console.log(state.reservations)
+        //console.log(state.reservations)
         for(let i =0; i < state.reservations.length; i++){
             if(state.reservations[i].rooms.length!=0){
                 for(let j=0;j < state.reservations[i].rooms.length;j++){
@@ -39,13 +39,15 @@ export const store = new Vuex.Store({
                         EventName: "Reserva " + state.reservations[i].id,
                         StartTime: new Date(state.reservations[i].addmisionDate),
                         EndTime: new Date(state.reservations[i].departureDate),
-                        OwnerId: this.reservations[i].rooms[j].id,
+                        OwnerId: state.reservations[i].rooms[j].id,
                         IsAllDay: true,
-                        Subject: "Reserva #" + this.reservations[i].id 
+                        Subject: "Reserva #" + state.reservations[i].id 
                     })
                 }
             }
         }
+        //console.log(state.reservationData)
+        return state.reservationData
     }
    }
 })

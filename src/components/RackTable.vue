@@ -66,10 +66,7 @@
                 },
                 ownerData: [], //aqui van las filas y el color
                 eventSettings: { 
-                    dataSource: [{EventName: "Reserva 2", StartTime:new Date(2019, 9, 18), EndTime:new Date(2019, 9, 29), OwnerId:1, id:1, IsAllDay:true, Subject:"Reserva 1"},
-              {EventName: "Reserva 1", StartTime:new Date(Date.now()),  EndTime:new Date(2019, 9, 10), OwnerId:1, id:2, IsAllDay:true, Subject:"Reserva 2"},
-              {EventName: "Reserva 3", StartTime:new Date(2019, 9, 18),  EndTime:new Date(2019, 9, 23), OwnerId:2, id:3, IsAllDay:true, Subject:"Reserva 3"},
-              {EventName: "Reserva 3", StartTime:new Date(2019, 9, 8),  EndTime:new Date(2019, 9, 28), OwnerId:4, id:4, IsAllDay:true, Subject:"Reserva 4"}],
+                    dataSource: [],
                     enableTooltip:true} //aca van los eventos
             }
         },
@@ -77,22 +74,23 @@
             schedule: [TimelineViews, TimelineMonth, Resize, DragAndDrop]
         },
         computed: {
-            ...mapState(['roomsData','reservations'])
+            ...mapState(['roomsData','reservationData'])
         },
         methods: {
             datasource(){
-                var reserva = this.reservationData;
-                this.eventSettings.dataSource = reserva
-                
+                var reservations = this.reservationData;
+                console.log(reservations)
+                this.eventSettings.dataSource = reservations
             },
             
             ...mapMutations(['getReservations','getRooms']),
 
            
         },
-        created() {
-           this.ownerData= this.getRooms();
-           console.log(this.ownerData)
+        beforeMount() {
+            this.getReservations();
+            this.datasource();
+           this.getRooms();
         },
     }
 </script>

@@ -1,7 +1,7 @@
 <template>
-    <div id="chartdiv">
-        
-    </div>
+      <div class="container">
+    <div id="chartdiv"></div>
+      </div>
 </template>
 <script src="https://www.amcharts.com/lib/4/core.js"></script>
 <script src="https://www.amcharts.com/lib/4/charts.js"></script>

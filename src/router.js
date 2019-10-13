@@ -37,12 +37,12 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/ClientSubmit.vue')
     },
     {
-      path: '/rack2',
-      name: 'rack2',
+      path: '/rack3',
+      name: 'amchart',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './components/rack2.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/rackaux.vue')
     },
 
   ]

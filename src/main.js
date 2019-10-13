@@ -8,6 +8,7 @@ import vuex from 'vuex'
 import { SchedulePlugin } from '@syncfusion/ej2-vue-schedule';
 
 import { store } from './store.js'
+
 Vue.use(SchedulePlugin);
 Vue.use(vuex)
 Vue.config.productionTip = false
