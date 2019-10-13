@@ -1,27 +1,12 @@
 <template>
     <div id='app'>
         <div id='container'>
-            <ejs-schedule id='Schedule' 
-                ref='ScheduleObj'
-                     width='100%' 
-                     height='550px' 
-                     :selectedDate='selectedDate' 
-                     :eventSettings='eventSettings'
-                      :group='group'>
+            <ejs-schedule id='Schedule' ref='ScheduleObj' width='100%' height='550px' :selectedDate='selectedDate' :eventSettings='eventSettings' :group='group'>
                 <e-views>
-                    <e-view option='TimelineMonth'
-                     :eventTemplate='timelineEventTemplate'
-                      :allowVirtualScrolling='virtualScroll'></e-view>
+                    <e-view option='TimelineMonth' :eventTemplate='timelineEventTemplate' :allowVirtualScrolling='virtualScroll'></e-view>
                 </e-views>
                 <e-resources>
-                    <e-resource field='OwnerId' 
-                    title='Owner' 
-                    name='Owners' 
-                    :allowMultiple='allowMultiple' 
-                    :dataSource='roomsData' 
-                    textField='Text' 
-                    idField='Id' 
-                    colorField='Color'>
+                    <e-resource field='OwnerId' title='Owner' name='Owners' :allowMultiple='allowMultiple' :dataSource='ownerData' textField='Text' idField='Id' colorField='Color'>
                     </e-resource>
                 </e-resources>
             </ejs-schedule>
@@ -30,11 +15,10 @@
 </template>
 <script>
     import Vue from 'vue';
-    import axios from 'axios'
     import { generateResourceData, generateStaticEvents } from '../datasource.js';
     import { SchedulePlugin, TimelineViews, TimelineMonth, Resize, DragAndDrop } from '@syncfusion/ej2-vue-schedule';
     Vue.use(SchedulePlugin);
-    import {mapState,mapMutations} from 'vuex'
+
     var timelineEventTemplateVue = Vue.component('timelineTemplate', {
         template: `<div class='template-wrap' style='{background: data.PrimaryColor}'>
             <div class="subject" style='{background: data.SecondaryColor};'>{{data.Subject}}</div></div>`,
@@ -48,11 +32,7 @@
     export default {
         data: function () {
             return {
-                actualRooms:0,
-                neededRooms:1,
-                actualReservations:0,
-                neededReservations:1,
-                selectedDate: new Date(2019, 9, 1),
+                selectedDate: new Date(2018, 4, 1),
                 timelineEventTemplate: function (e) {
                     return {
                         template: timelineEventTemplateVue
@@ -64,36 +44,13 @@
                     byGroupID: false,
                     resources: ['Owners']
                 },
-                ownerData: [], //aqui van las filas y el color
-                eventSettings: { 
-                    dataSource: [{EventName: "Reserva 2", StartTime:new Date(2019, 9, 18), EndTime:new Date(2019, 9, 29), OwnerId:1, id:1, IsAllDay:true, Subject:"Reserva 1"},
-              {EventName: "Reserva 1", StartTime:new Date(Date.now()),  EndTime:new Date(2019, 9, 10), OwnerId:1, id:2, IsAllDay:true, Subject:"Reserva 2"},
-              {EventName: "Reserva 3", StartTime:new Date(2019, 9, 18),  EndTime:new Date(2019, 9, 23), OwnerId:2, id:3, IsAllDay:true, Subject:"Reserva 3"},
-              {EventName: "Reserva 3", StartTime:new Date(2019, 9, 8),  EndTime:new Date(2019, 9, 28), OwnerId:4, id:4, IsAllDay:true, Subject:"Reserva 4"}],
-                    enableTooltip:true} //aca van los eventos
+                ownerData: generateResourceData(1, 300, 'Resource'),
+                eventSettings: { dataSource: generateStaticEvents(new Date(2018, 4, 1), 300, 12) }
             }
         },
         provide: {
             schedule: [TimelineViews, TimelineMonth, Resize, DragAndDrop]
-        },
-        computed: {
-            ...mapState(['roomsData','reservations'])
-        },
-        methods: {
-            datasource(){
-                var reserva = this.reservationData;
-                this.eventSettings.dataSource = reserva
-                
-            },
-            
-            ...mapMutations(['getReservations','getRooms']),
-
-           
-        },
-        created() {
-           this.ownerData= this.getRooms();
-           console.log(this.ownerData)
-        },
+        }
     }
 </script>
 <style>

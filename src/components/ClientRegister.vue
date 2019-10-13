@@ -1,6 +1,6 @@
 <template>
   <div class="formulario">
-  <h3> Formulario de Postulación </h3>
+  <h3 align="center"> Formulario de Postulación </h3>
     <b-form @submit="postToApi" @reset="onReset" v-if="show">
     <b-form-group id="input-group-2" label="Nombres:" label-for="input-2">
         <b-form-input
@@ -52,7 +52,7 @@
         ></b-form-input>
         
       </b-form-group>
-      <b-form-group id="input-group-4" label="Edd:" label-for="input-4">
+      <b-form-group id="input-group-4" label="Edad:" label-for="input-4">
         <b-form-input
           id="input-4"
           v-model="Client.age"
@@ -124,9 +124,12 @@ import {mapState} from 'vuex';
     }
   }
 </script>
-<style lang="css">
+<style lang="css" scoped>
     .formulario{
-    width:350px;
+    width:400px;
+    text-align:left;
+    margin-top:15px;
+    margin-bottom:20px;
     background-color:white;
     border-radius:10px;
     padding:45px;
@@ -134,5 +137,6 @@ import {mapState} from 'vuex';
 -moz-box-shadow: 10px 10px 5px 0px rgba(184,184,184,1);
 box-shadow: 10px 10px 5px 0px rgba(184,184,184,1);
 border:1px solid #fffffa;
+background-image: url ()
   }
 </style>
