@@ -81,6 +81,11 @@ import {mapState} from 'vuex';
 
     data() {
       return {
+        computed:{
+          reservations(){
+            return this.$store.state.reservation_id
+          }
+        },
         Client: {name:'',surname:'',identificationNumber:'',headline:'', mail:'', age:'', phone:''},
         show: true
       }
@@ -106,20 +111,14 @@ import {mapState} from 'vuex';
       postToApi(evt){
        evt.preventDefault();
          console.log(this.Client)
-         /*
-         URL = 'http://192.241.158.237:8081/mingeso/'+client_id+'/reservation/'+reservation_id;
-         axios.post('http://192.241.158.237:8081/mingeso/',newCandidate)
-         .then((response)=>{
-           console.log("hice post de esto: "+response)
+         var id = this.$store.state.reservation_id
+         var url = 'http://192.241.158.237:8081/mingeso/client/'+id+'/reservation'
+         axios.post(url,this.Client).then((response)=>{
+           console.log(response.data)
          })
-         .catch((error)=>{
-           console.log(error)
-         })
-         this.Candidate.name = " "
-         this.Candidate.rut=" "
-         this.Candidate.email=" "
-         this.Candidate.degree=" "
-         */
+      },
+      created() {
+       //console.log("el id es"+this.$store.reservation_id)
       },
 
     }

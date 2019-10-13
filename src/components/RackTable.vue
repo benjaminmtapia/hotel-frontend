@@ -64,6 +64,7 @@
                 },
                 ownerData: generateResourceData(1, 300, 'Resource'),
                 eventSettings: { 
+                    datasource:[],
                     enableTooltip:true,
                     dataSource: generateStaticEvents(new Date(2018, 4, 1), 300, 12) 
                     

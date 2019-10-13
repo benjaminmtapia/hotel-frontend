@@ -84,15 +84,18 @@
 
 <script>
 import axios from 'axios';
-import {mapGetters} from 'vuex';
-import {store} from '../store.js'
 export default {
+    computed:{
+        reservation_id(){
+            return this.$store.state.reservation_id
+        }
+    },
     data(){
         return{
             roomIds:[],
             roomsReserved:[],
             rooms:[],
-            reservation_id:0,
+            reservation:0,
             roomsNeeded:1,
             actualRooms:0,
             filterNeeded:1,
@@ -156,15 +159,16 @@ export default {
         
          sendReservation(id){
              console.log(id)
-             this.reservation = id
-             this.store.commit('changeReservationid',id)
+             this.reservation_id = id
+             this.$store.state.reservation_id.push(this.reservation)
+             console.log(this.reservation_id)
             for(let i = 0; i < this.roomsReserved.length; i++){
                         console.log(this.roomsReserved[i])
                         const URL = 'http://192.241.158.237:8081/mingeso/reservation/'+id+'/room/'+this.roomsReserved[i].id
                         axios.put(URL);
                 }
-
-            console.log("el id de la reserva es "+this.reservation)
+            this.$router.push('/clientSubmit')
+            //console.log("el id de la reserva es "+this.reservation)
             
         }
 
