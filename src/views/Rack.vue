@@ -11,12 +11,16 @@ import Rack from '../components/RackTable.vue'
 export default {
     components:{
         Rack
-    }
+    },
 }
 </script>
-<style lang="css">
+<style scoped>
     .rack{
         margin-top:45px;
         text-align:center
+    }
+    body{
+        background-color:white !important;
+        background-image:none;
     }
 </style>

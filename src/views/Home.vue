@@ -13,6 +13,15 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  },
+  created(){
+    location.reload()
   }
 }
 </script>
+
+<style scoped>
+body{
+  background-color:black !important;
+}
+</style>

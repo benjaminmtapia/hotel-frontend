@@ -1,23 +1,26 @@
 <template>
   <div class="formulario">
-  <h3 align="center"> Formulario de Postulación </h3>
+  <h3 align="center"> Registro de cliente </h3>
+  <p>Por favor, llene con sus datos para finalizar su reserva</p>
     <b-form @submit="postToApi" @reset="onReset" v-if="show">
     <b-form-group id="input-group-2" label="Nombres:" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="Client.name"
-          required
+          
           placeholder="María Paz"
+
         ></b-form-input>
-      </b-form-group>
+  
+        </b-form-group>
 
       <b-form-group id="input-group-1" label="Apellidos:" label-for="input-1">
         <b-form-input
           id="input-2"
-          v-model="Client.surname"
-          required
+          v-model="surname"
+          
           placeholder="Retamales Zamorano"
         ></b-form-input>
+        
       </b-form-group>
       
   
@@ -26,7 +29,7 @@
       <b-form-group id="input-group-3" label="Numero de Identificación:" label-for="input-3">
         <b-form-input
           id="input-3"
-          v-model="Client.identificationNumber"
+          v-model="identificationNumber"
           required
           placeholder="Rut o Pasaporte"
         ></b-form-input>
@@ -35,7 +38,7 @@
     <b-form-group id="input-group-4" label="Mail:" label-for="input-4">
         <b-form-input
           id="input-4"
-          v-model="Client.mail"
+          v-model="mail"
           required
           type="email"
           placeholder="noname@example.com"
@@ -45,21 +48,22 @@
       <b-form-group id="input-group-4" label="Telefono:" label-for="input-4">
         <b-form-input
           id="input-4"
-          v-model="Client.phone"
+          v-model="phone"
           required
-          type="text"
-          placeholder="+569 12345678"
+          type="Number"
+          placeholder=" 9 12345678"
         ></b-form-input>
         
       </b-form-group>
       <b-form-group id="input-group-4" label="Edad:" label-for="input-4">
         <b-form-input
           id="input-4"
-          v-model="Client.age"
+          v-model="age"
           required
           type="number"
           placeholder="21"
         ></b-form-input>
+        
         </b-form-group>
        <b-form-group label="Es titular">
       <b-form-radio v-model="Client.headline" name="some-radios" value="true">Sí</b-form-radio>
@@ -76,7 +80,8 @@
 
 <script>
 import axios from 'axios';
-import {mapState} from 'vuex';
+import { required, minLength, between } from 'vuelidate/lib/validators'
+
   export default {
 
     data() {
@@ -86,8 +91,15 @@ import {mapState} from 'vuex';
             return this.$store.state.reservation_id
           }
         },
+        name:'',
+        surname:'',
+        identificationNumber:'',
+        headline:'',
+        mail:'',
+        age:'',
+        phone:'',
         Client: {name:'',surname:'',identificationNumber:'',headline:'', mail:'', age:'', phone:''},
-        show: true
+        show: true,
       }
     },
     methods: {
@@ -115,28 +127,24 @@ import {mapState} from 'vuex';
          var url = 'http://192.241.158.237:8081/mingeso/client/'+id+'/reservation'
          axios.post(url,this.Client).then((response)=>{
            console.log(response.data)
-         })
+         });
+         
+         this.$router.push('/')
       },
-      created() {
-       //console.log("el id es"+this.$store.reservation_id)
-      },
-
     }
   }
 </script>
-<style lang="css" scoped>
+<style>
     .formulario{
     width:400px;
     text-align:left;
-    margin-top:15px;
+    font-size:14px;
+    margin-top:30px;
     margin-bottom:20px;
     background-color:white;
     border-radius:10px;
     padding:45px;
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(184,184,184,1);
--moz-box-shadow: 10px 10px 5px 0px rgba(184,184,184,1);
-box-shadow: 10px 10px 5px 0px rgba(184,184,184,1);
+    
 border:1px solid #fffffa;
-background-image: url ()
   }
 </style>

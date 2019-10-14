@@ -30,8 +30,6 @@
 </template>
 <script>
     import Vue from 'vue';
-    import axios from 'axios'
-    import { generateResourceData, generateStaticEvents } from '../datasource.js';
     import { SchedulePlugin, TimelineViews, TimelineMonth, Resize, DragAndDrop } from '@syncfusion/ej2-vue-schedule';
     Vue.use(SchedulePlugin);
     import {mapState,mapMutations} from 'vuex'
