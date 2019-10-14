@@ -4,7 +4,7 @@
 
         <b-row>
         <b-col sm="1"> </b-col>
-        <b-col sm="9">
+        <b-col sm="7">
         <div class="filter">
         <h6 justify-center>Filtrar Habitaciones</h6>
         <b-form inline @submit="searchFilter" class="justify-content-md-center">
@@ -48,9 +48,9 @@
         </b-form>
        </div>
         </b-col>
-         <b-col  sm="2">
+         <b-col  sm="3">
            <div class="cart">
-            <h5 style="text-align:center;">Carrito:</h5>
+            <h5 style="text-align:center;">Habitaciones en Reserva:</h5>
                 <li v-for="room in roomsReserved">
                     Habitación: {{room.roomNumber}} 
                 </li>
@@ -60,7 +60,7 @@
         </b-col>
         </b-row>  
         <b-row v-if="showRooms" v-for="room in rooms">
-        <b-col ></b-col>
+        <b-col sm="2"></b-col>
             <b-col sm="6" class="room">
             
                 <b-form>
@@ -227,11 +227,11 @@ export default {
     }
     .cart{
         padding:20px;
-        margin-top:30px;
-        position:fixed;
+        margin-top: 45px;
+        position: sticky;
         font-size:14px;
         text-align:left;
-        width:240px;
+        width:400px;
         line-height:20px;
         background-color:#fafafa;
         -webkit-box-shadow: 10px 10px 5px 0px rgba(184,184,184,1);
