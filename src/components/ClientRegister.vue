@@ -127,7 +127,6 @@ import { required, minLength, between } from 'vuelidate/lib/validators'
          axios.post(url,this.Client).then((response)=>{
            console.log(response.data)
          });
-         this.$store.
          this.$router.push('/')
       },
     }
