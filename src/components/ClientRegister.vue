@@ -80,6 +80,7 @@
 
 <script>
 import axios from 'axios';
+import {mapState} from 'vuex';
 import { required, minLength, between } from 'vuelidate/lib/validators'
 
   export default {
@@ -87,9 +88,7 @@ import { required, minLength, between } from 'vuelidate/lib/validators'
     data() {
       return {
         computed:{
-          reservations(){
-            return this.$store.state.reservation_id
-          }
+            ...mapState['reservation_id','clientData']
         },
         name:'',
         surname:'',
@@ -128,7 +127,7 @@ import { required, minLength, between } from 'vuelidate/lib/validators'
          axios.post(url,this.Client).then((response)=>{
            console.log(response.data)
          });
-         
+         this.$store.
          this.$router.push('/')
       },
     }

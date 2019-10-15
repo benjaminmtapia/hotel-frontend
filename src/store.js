@@ -8,7 +8,8 @@ export const store = new Vuex.Store({
        reservations:[],
        reservationData:[],
        rooms:[],
-       roomsData:[]
+       roomsData:[],
+       clientData:[]
    },
    mutations: {
     async getRooms(state){

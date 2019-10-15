@@ -8,13 +8,13 @@
             <h5 align="center">Crear Reserva</h5>
             <b-form inline @submit="searchFilter" class="justify-content-md-center">
             
-                <b-form-group id="input-group-1" label="Cantidad Camas: " label-for="input-1">
+                <b-form-group id="input-group-1" label="Cantidad Personas: " label-for="input-1">
                     <b-form-input
                     id="input-1"
                     required
                     type="number"
                     style="width:60px;"
-                    v-model="searchForm.bedQuantity"
+                    v-model="searchForm.numberPeople"
                     
                     ></b-form-input>
                 </b-form-group>
@@ -110,7 +110,7 @@ export default {
             showCart:false,
             showRooms:false,
                 searchForm:{
-                    bedQuantity:0,
+                    numberPeople:0,
                     addmisionDate:null,
                     departureDate:null,
                 },
@@ -125,9 +125,14 @@ export default {
         searchFilter(evt){
             evt.preventDefault();
            // console.log( this.searchForm);
-            axios.get('http://192.241.158.237:8081/mingeso/rooms').then((response)=>{
+            axios.post('http://192.241.158.237:8081/mingeso/room/filter',{
+                addmisionDate:this.searchForm.addmisionDate,
+                departureDate:this.searchForm.departureDate,
+                numberPeople:this.searchForm.numberPeople
+            }).then((response)=>{
                 //console.log(response.data);
                 this.rooms = response.data;
+
                 this.showRooms=true
             })
         },
