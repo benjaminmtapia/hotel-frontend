@@ -126,13 +126,13 @@ export default {
     methods: {
         searchFilter(evt){
             evt.preventDefault();
-           // console.log( this.searchForm);
+           console.log( this.searchForm);
             axios.post('http://192.241.158.237:8081/mingeso/room/filter',{
                 addmisionDate:this.searchForm.addmisionDate,
                 departureDate:this.searchForm.departureDate,
                 numberPeople:this.searchForm.numberPeople
             }).then((response)=>{
-                //console.log(response.data);
+                console.log(response.data);
                 this.rooms = response.data;
 
                 this.showRooms=true

@@ -1,6 +1,6 @@
 <template>
     <b-container class="rack">
-    <h4>Rack de Habitaciones</h4>
+    <h4>Rack de Habitaciones 2019</h4>
 
         <Rack/>
     
