@@ -12,6 +12,7 @@
                     <b-form-input
                     id="input-1"
                     required
+                    min="1"
                     type="number"
                     style="width:60px;"
                     v-model="searchForm.numberPeople"
@@ -24,6 +25,7 @@
                     id="input-2"
                     required
                     type="date"
+                    min="2019-10-01"
                     v-model="searchForm.addmisionDate"
                     ></b-form-input>
                 </b-form-group>
@@ -33,8 +35,8 @@
                     id="input-2"
                     required
                     type="date"
+                    min="2019-10-01"
                     v-model="searchForm.departureDate"
-                    placeholder="seleccione" 
                     ></b-form-input>
                 </b-form-group>
                 
@@ -103,7 +105,7 @@ export default {
             actualRooms:0,
             filterNeeded:1,
             actualFilter:0,
-
+            actualDate: new Date(),
             actualReservation:0,
             reservationNeeded:1,
 

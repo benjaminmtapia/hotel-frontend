@@ -6,9 +6,8 @@
     <b-form-group id="input-group-2" label="Nombres:" label-for="input-2">
         <b-form-input
           id="input-2"
-          
           placeholder="María Paz"
-
+          v-model="Client.name"
         ></b-form-input>
   
         </b-form-group>
@@ -16,7 +15,7 @@
       <b-form-group id="input-group-1" label="Apellidos:" label-for="input-1">
         <b-form-input
           id="input-2"
-          v-model="surname"
+          v-model="Client.surname"
           
           placeholder="Retamales Zamorano"
         ></b-form-input>
@@ -29,7 +28,7 @@
       <b-form-group id="input-group-3" label="Numero de Identificación:" label-for="input-3">
         <b-form-input
           id="input-3"
-          v-model="identificationNumber"
+          v-model="Client.identificationNumber"
           required
           placeholder="Rut o Pasaporte"
         ></b-form-input>
@@ -38,17 +37,18 @@
     <b-form-group id="input-group-4" label="Mail:" label-for="input-4">
         <b-form-input
           id="input-4"
-          v-model="mail"
+          v-model="Client.mail"
           required
           type="email"
           placeholder="noname@example.com"
+
         ></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-4" label="Telefono:" label-for="input-4">
         <b-form-input
           id="input-4"
-          v-model="phone"
+          v-model="Client.phone"
           required
           type="Number"
           placeholder=" 9 12345678"
@@ -58,17 +58,13 @@
       <b-form-group id="input-group-4" label="Edad:" label-for="input-4">
         <b-form-input
           id="input-4"
-          v-model="age"
+          v-model="Client.age"
           required
           type="number"
           placeholder="21"
         ></b-form-input>
         
         </b-form-group>
-       <b-form-group label="Es titular">
-      <b-form-radio v-model="Client.headline" name="some-radios" value="true">Sí</b-form-radio>
-      <b-form-radio v-model="Client.headline" name="some-radios" value="false">No</b-form-radio>
-    </b-form-group>
 
     
     
@@ -90,14 +86,8 @@ import { required, minLength, between } from 'vuelidate/lib/validators'
         computed:{
             ...mapState['reservation_id','clientData']
         },
-        name:'',
-        surname:'',
-        identificationNumber:'',
-        headline:'',
-        mail:'',
-        age:'',
-        phone:'',
-        Client: {name:'',surname:'',identificationNumber:'',headline:'', mail:'', age:'', phone:''},
+
+        Client: {name:'',surname:'',identificationNumber:'',headline:true, mail:'', age:'', phone:''},
         show: true,
       }
     },
@@ -127,6 +117,7 @@ import { required, minLength, between } from 'vuelidate/lib/validators'
          axios.post(url,this.Client).then((response)=>{
            console.log(response.data)
          });
+        // wait(7000);
          this.$router.push('/')
       },
     }
