@@ -17,7 +17,9 @@ export default {
 <style scoped>
     .rack{
         margin-top:45px;
-        text-align:center
+        text-align:center;
+        padding:30px;
+        background-color:white;
     }
     body{
         background-color:white !important;

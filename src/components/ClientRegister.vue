@@ -2,10 +2,11 @@
   <div class="formulario">
   <h3 align="center"> Registro de cliente </h3>
   <p>Por favor, llene con sus datos para finalizar su reserva</p>
-    <b-form @submit="postToApi" @reset="onReset" v-if="show">
+    <b-form @submit="postToApi"  v-if="show">
     <b-form-group id="input-group-2" label="Nombres:" label-for="input-2">
         <b-form-input
           id="input-2"
+          required
           placeholder="María Paz"
           v-model="Client.name"
         ></b-form-input>
@@ -16,7 +17,7 @@
         <b-form-input
           id="input-2"
           v-model="Client.surname"
-          
+          required
           placeholder="Retamales Zamorano"
         ></b-form-input>
         
@@ -60,6 +61,7 @@
           id="input-4"
           v-model="Client.age"
           required
+          min="1"
           type="number"
           placeholder="21"
         ></b-form-input>
@@ -77,7 +79,6 @@
 <script>
 import axios from 'axios';
 import {mapState} from 'vuex';
-import { required, minLength, between } from 'vuelidate/lib/validators'
 
   export default {
 
@@ -92,23 +93,7 @@ import { required, minLength, between } from 'vuelidate/lib/validators'
       }
     },
     methods: {
-      onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
-      },
-      onReset(evt) {
-        evt.preventDefault()
-        // Reset our form values
-        this.form.email = ''
-        this.form.name = ''
-        this.form.food = null
-        this.form.checked = []
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
-      },
+
       postToApi(evt){
        evt.preventDefault();
          console.log(this.Client)
@@ -118,7 +103,38 @@ import { required, minLength, between } from 'vuelidate/lib/validators'
            console.log(response.data)
          });
         // wait(7000);
-         this.$router.push('/')
+        //NOTIFICACION
+        const h = this.$createElement
+        // Using HTML string
+        const titleVNode = h('div', { domProps: { innerHTML: 'Su reserva fue creada con éxito' } })
+        // More complex structure
+        const messageVNode = h('div', { class: ['foobar'] }, [
+          h('p', { class: ['text-center'] }, [
+            ' Se le enviara un correo a  ', this.Client.mail, ' con los detalles de su reserva'
+          ]),
+          h('p', { class: ['text-center'] }),
+          h('b-img', {
+            props: {
+              src: 'https://uradi.me/assets/admin/images/icon/success.svg',
+              thumbnail: true,
+              center: true,
+              fluid: true
+            }
+          })
+        ])
+        // We must pass the generated VNodes as arrays
+        this.$bvModal.msgBoxOk([messageVNode], {
+          title: [titleVNode],
+          buttonSize: 'sm',
+          centered: true, size: 'sm'
+        })
+        setTimeout(() => {
+          window.location.href='/'
+        }, 30000);
+        
+
+
+         //this.$router.push('/')
       },
     }
   }
