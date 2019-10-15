@@ -51,7 +51,7 @@
           id="input-4"
           v-model="Client.phone"
           required
-          type="Number"
+          type="number"
           placeholder=" 9 12345678"
         ></b-form-input>
         
@@ -130,7 +130,7 @@ import {mapState} from 'vuex';
         })
         setTimeout(() => {
           window.location.href='/'
-        }, 30000);
+        }, 5000);
         
 
 
